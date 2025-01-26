@@ -27,3 +27,13 @@ jobs:
            sudo apt-get install trivy -y
            #scanning files
            trivy fs .
+      - name: Docker build and push
+        run: |
+          #run commands to build and push docker images
+          docker build --build-arg TMDB_V3_API_KEY=1fd2e3b42f7235480abc67e4ce25a881 -t netflix .
+          docker tag netflix vramgreddy/netflix:latest
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker push vramgreddy/netflix:latest
+        env:
+          DOCKER_CLI_ACI: 1    
+
